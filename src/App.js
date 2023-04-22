@@ -1,23 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import Navbar from "./components/Navbar";
+import Search from "./components/Search";
+import Books from "./components/Books";
+import "./App.css";
+import "./css/Navbar.css";
+import "./css/Search.css";
+import "./css/Books.css";
+import { useState, useEffect } from "react";
+
 
 function App() {
+  const [query, setQuery] = useState("");
+  const [searchInputValue, setSearchInputValue] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
+
+
+  // klucz
+  const API_Key = "";
+
+  useEffect(() => {
+    fetch(`https://www.googleapis.com/books/v1/volumes?q=${searchInputValue}&key=${API_Key}`)
+      .then(res => res.json())
+      .then(data => setSearchResult(data))
+      .catch(err => console.log(err))
+  }, [query])
+  
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Navbar />
+      <main>
+        <Search 
+          searchInputValue={searchInputValue} 
+          setSearchInputValue={setSearchInputValue}
+          query={query}
+          setQuery={setQuery}
+        />
+        <Books searchResult={searchResult} />
+      </main>
     </div>
   );
 }
