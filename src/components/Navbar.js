@@ -1,3 +1,5 @@
+import {NavLink} from 'react-router-dom';
+
 export default function Navbar() {
     return (
         <header>
@@ -9,13 +11,14 @@ export default function Navbar() {
             <p className="page-title">All books</p>
             <nav className="visible">
                 <div>
-                    <p>All books</p>
-                    <p>To be read</p>
-                    <p>5 stars</p>
-                    <p>4 stars</p>
-                    <p>3 stars</p>
-                    <p>2 stars</p>
-                    <p>1 stars</p>
+                    <NavLink to="/">explore books</NavLink>
+                    <NavLink to="/all-books">all books</NavLink>
+                    <NavLink to="/to-be-read">To be read</NavLink>
+                    <NavLink to="/five-stars">5 stars</NavLink>
+                    <NavLink to="/four-stars">4 stars</NavLink>
+                    <NavLink to="/three-stars">3 stars</NavLink>
+                    <NavLink to="/two-stars">2 stars</NavLink>
+                    <NavLink to="/one-star">1 star</NavLink>
                 </div>
             </nav>
         </header>

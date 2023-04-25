@@ -2,11 +2,11 @@ export default function Search({ searchInputValue, setSearchInputValue, query, s
 
     const submitForm = (e) => {
         e.preventDefault();
-        setQuery(e.target.children[0].value)
+        setQuery(e.target.children[0].value);
     }
 
     const handleInputValue = (e) => {
-        setSearchInputValue(e.target.value)
+        setSearchInputValue(e.target.value);
     }
 
     return(

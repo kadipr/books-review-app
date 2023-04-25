@@ -42,3 +42,21 @@
 .bold {
     font-weight: bolder;
 }
+
+.add-to-category {
+    display: flex;
+    width: 80%;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.add-to-category>button:hover {
+    background-color: pink;
+}
+
+.add-to-category > button{
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 20px;
+    border: none;
+}
