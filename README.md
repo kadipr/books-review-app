@@ -1,4 +1,28 @@
-## Project in progres
+## Books review app
+
+This app allows you to search some books with provided name in the title. You can read some basic info about those books and review them with 1 to 5 stars or add to "to be read" category.
+
+### Home Page
+
+![home page](./readme_pictures/home.jpg)
+
+### Info popup
+
+![info popup](./readme_pictures/info_popup.jpg)
+
+When you click on a book, a popup with some information about it displays. It shows information such a title of book, author or short description. When you click on a book second time, the popup will remove.
+
+### Review categories
+
+![review categories](./readme_pictures/categories.jpg)
+
+You have some review categories to choose. When you give a book 3 stars, you can click on '3 stars' category and you see it there.
+
+### RWD
+
+![width](./readme_pictures/width.jpg)
+
+With different width, display of the app changes a little bit. With smaller width, the navbar has a bigger height. And you can toggle its visibility clicking hamburger.
 
 -------------------------------
 
