@@ -45,8 +45,15 @@ nav.visible {
     font-weight: normal;
 }
 
-nav > div p {
+nav > div {
+    display: flex;
+    flex-direction: column;
+} 
+
+nav > div a {
     height: 40px;
+    text-decoration: none;
+    color: black;
 }
 
 @media screen and (min-width: 800px) {
@@ -72,6 +79,10 @@ nav > div p {
         justify-content: left;
     }
 
+    nav > div {
+        flex-direction: row;
+    } 
+
     nav > div, nav.visible > div {
         display: flex;
         justify-content: space-between;
@@ -79,7 +90,7 @@ nav > div p {
         width: 800px;
     }
 
-    nav > div p {
+    nav > div a {
         height: 23px;
     }
 }

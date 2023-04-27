@@ -1,6 +1,12 @@
 import { useEffect } from "react";
 
-export default function Books({ searchResult, idsOfBooks, setIdsOfBooks, isMainPage, API_Key, books, setBooks, currentID, setCurrentID, addingCategory, setAddingCategory }) {
+export default function Books(props) {
+
+    const { 
+        searchResult, idsOfBooks, setIdsOfBooks, isMainPage, API_Key, books, setBooks, 
+        currentID, setCurrentID, addingCategory, setAddingCategory, categoryIdx 
+    } = props;
+
     const togglePopup = (e) => {
         // dodac kod, w przypadku gdy dana ksiazka nie ma img
         const popupDiv = e.target.parentNode.parentNode.children[1];
@@ -14,6 +20,8 @@ export default function Books({ searchResult, idsOfBooks, setIdsOfBooks, isMainP
 
         popupDiv.classList.toggle("show");
     }
+
+    // console.log("cat idx: " + categoryIdx)
 
     let resultArr = new Array(searchResult.length);
 
@@ -43,55 +51,52 @@ export default function Books({ searchResult, idsOfBooks, setIdsOfBooks, isMainP
         setCurrentID(el.id);
         setAddingCategory(number);
     }
-        
 
+    function Book({togglePopup, el, buttonsValues, addToCategory}) {
+    return (
+        // zmienic klucz
+        <div>
+             <div onClick={togglePopup} className="book"><img src={el.volumeInfo?.imageLinks?.thumbnail} alt={el.volumeInfo?.title} /></div>
+             <div className="info-popup">
+                 <div className="add-to-category">
+                     {buttonsValues.map((btn, id) => {
+                        return (
+                            <button onClick={() => addToCategory(el, id)}>{buttonsValues[id]}</button>
+                        )
+                    })}
+                </div>
+                <p><span className="bold">title:</span> {el.volumeInfo?.title}</p>
+                <p><span className="bold">author:</span> {el.volumeInfo?.authors}</p>
+                <p><span className="bold">categories:</span> {el.volumeInfo?.categories}</p>
+                <p><span className="bold">publish date:</span> {el.volumeInfo?.publishedDate}</p>
+                <p><span className="bold">info:</span> {el.volumeInfo?.description !== undefined ? el.volumeInfo?.description : ''}</p>
+            </div>
+        </div>
+    )
+}
 
     return (
         <div className="books-container">
             {isMainPage ? (resultArr !== undefined ? resultArr.map(el => {
                 // stworzyc komponent Book
                 return (
-                    // zmienic klucz
-                    <div>
-                        <div onClick={togglePopup} className="book"><img src={el.volumeInfo.imageLinks?.thumbnail} alt={el.volumeInfo.title} /></div>
-                        <div className="info-popup">
-                            <div className="add-to-category">
-                                {buttonsValues.map((btn, id) => {
-                                    return (
-                                        <button onClick={() => addToCategory(el, id)}>{buttonsValues[id]}</button>
-                                    )
-                                })}
-                            </div>
-                            <p><span className="bold">title:</span> {el.volumeInfo.title}</p>
-                            <p><span className="bold">author:</span> {el.volumeInfo.authors}</p>
-                            <p><span className="bold">categories:</span> {el.volumeInfo.categories}</p>
-                            <p><span className="bold">publish date:</span> {el.volumeInfo.publishedDate}</p>
-                            <p><span className="bold">info:</span> {el.volumeInfo.description !== undefined ? el.volumeInfo.description : ''}</p>
-                        </div>
-                    </div>
+                    <Book 
+                        togglePopup={togglePopup}
+                        el={el}
+                        buttonsValues={buttonsValues}
+                        addToCategory={addToCategory}
+                    />
                 )
 
-            // zmienic indeks listy, tak aby wyswietlal sie zgodny z dana podstrona
-            }): "") :  books[1] !== undefined ? books[1].map(el => {
+            }): "") :  books[categoryIdx] !== undefined ? books[categoryIdx].map(el => {
                 return (
                     // zmienic klucz
-                    <div>
-                        <div onClick={togglePopup} className="book"><img src={el.volumeInfo.imageLinks?.thumbnail} alt={el.volumeInfo.title} /></div>
-                        <div className="info-popup">
-                            <div className="add-to-category">
-                                {buttonsValues.map((btn, id) => {
-                                    return (
-                                        <button onClick={() => addToCategory(el, id)}>{buttonsValues[id]}</button>
-                                    )
-                                })}
-                            </div>
-                            <p><span className="bold">title:</span> {el.volumeInfo.title}</p>
-                            <p><span className="bold">author:</span> {el.volumeInfo.authors}</p>
-                            <p><span className="bold">categories:</span> {el.volumeInfo.categories}</p>
-                            <p><span className="bold">publish date:</span> {el.volumeInfo.publishedDate}</p>
-                            <p><span className="bold">info:</span> {el.volumeInfo.description !== undefined ? el.volumeInfo.description : ''}</p>
-                        </div>
-                    </div>
+                    <Book 
+                        togglePopup={togglePopup}
+                        el={el}
+                        buttonsValues={buttonsValues}
+                        addToCategory={addToCategory}
+                    />
                 )
             }): ""}
         </div>

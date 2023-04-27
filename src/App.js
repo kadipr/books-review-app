@@ -15,8 +15,6 @@ function App() {
   const [searchResult, setSearchResult] = useState([]);
   const [idsOfBooks, setIdsOfBooks] = useState([[],[],[],[],[],[]]);
   const [books, setBooks] = useState([[],[],[],[],[],[]]);
-  // const [booksInCategory, setBooksInCategory] = useState([]);
-  // const [categoryName, setCategoryName] = useState("");
   const [currentID, setCurrentID] = useState("");
   const [addingCategory, setAddingCategory] = useState(null);
 
@@ -70,7 +68,6 @@ function App() {
       .catch(err => console.log(err))
   }, [query])
 
-  //napisac kod, ktory bedzie fetchowal elementy od razu po dodaniu ich do danej listy (???)
   return (
     <BrowserRouter>
       <div className="App">
@@ -83,10 +80,9 @@ function App() {
             setQuery={setQuery}
           />
           
-{/* dodać route do all books (?) */}
-
+          {/* dodać route do all books (?) */}
           <Routes>
-            {routesParams.map(el => {
+            {routesParams.map((el, idx) => {
               return (
                 <Route path={el.path} element={<Books
                   searchResult={el.searchResult} 
@@ -100,6 +96,7 @@ function App() {
                   API_Key={API_Key}
                   addingCategory={addingCategory}
                   setAddingCategory={setAddingCategory}
+                  categoryIdx={idx - 1}
                 />}/>
               )
             })}

@@ -17,6 +17,7 @@
 
 main {
     position: absolute;
+    /* top: var(--nav-height); */
     top: calc(var(--nav-height) + 300px);
     width: 100%;
 }
