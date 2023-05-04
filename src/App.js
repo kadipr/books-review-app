@@ -12,6 +12,8 @@ function App() {
   // uporzadkowac usestate'y
   const [query, setQuery] = useState("");
   const [searchInputValue, setSearchInputValue] = useState("");
+
+  // books shown on a specific page
   const [searchResult, setSearchResult] = useState([]);
   const [idsOfBooks, setIdsOfBooks] = useState([[],[],[],[],[],[]]);
   const [books, setBooks] = useState([[],[],[],[],[],[]]);

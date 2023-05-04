@@ -46,10 +46,9 @@ export default function Books(props) {
             const newArr = [...idsOfBooks];
             newArr[number].push(el.id);
             setIdsOfBooks(newArr);
-        }
-        
-        setCurrentID(el.id);
-        setAddingCategory(number);
+            setCurrentID(el.id);
+            setAddingCategory(number);
+        }         
     }
 
     function Book({togglePopup, el, buttonsValues, addToCategory}) {
