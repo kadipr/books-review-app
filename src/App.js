@@ -9,9 +9,8 @@ import { useState, useEffect } from "react";
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 
 function App() {
-  // uporzadkowac usestate'y
+  // delete unnecessery states
   const [query, setQuery] = useState("");
-  const [searchInputValue, setSearchInputValue] = useState("");
 
   // books shown on a specific page
   const [searchResult, setSearchResult] = useState([]);
@@ -58,8 +57,7 @@ function App() {
     }
   ]
 
-  // klucz
-  const API_Key = "YOUR_KEY";
+  const API_Key = process.env.KEY;
 
   useEffect(() => {
     fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&key=${API_Key}`)
@@ -76,9 +74,6 @@ function App() {
         <Navbar />
         <main>
           <Search 
-            searchInputValue={searchInputValue} 
-            setSearchInputValue={setSearchInputValue}
-            query={query}
             setQuery={setQuery}
           />
           

@@ -1,21 +1,27 @@
-export default function Search({ searchInputValue, setSearchInputValue, query, setQuery }) {
+import { useState } from "react";
+
+export default function Search({ setQuery }) {
+    const [inputValue, setInputValue] = useState("");
 
     const submitForm = (e) => {
         e.preventDefault();
-        setQuery(e.target.children[0].value);
+        setQuery(inputValue);
     }
 
     const handleInputValue = (e) => {
-        setSearchInputValue(e.target.value);
+        setInputValue(e.target.value);
     }
 
     return(
         <form onSubmit={submitForm}>
             <input 
-                onChange={handleInputValue} className="search-input" 
-                type="text" value={searchInputValue} 
+                type="text" className="search-input"
+                onChange={handleInputValue} value={inputValue} 
             />
-            <input className="submit-input" type="submit" value="submit" />
+            <input 
+                type="submit" className="submit-input"
+                value="submit" 
+            />
         </form>
     )
 }
