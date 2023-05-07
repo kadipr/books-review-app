@@ -1,10 +1,7 @@
-import { useEffect } from "react";
-
 export default function Books(props) {
-
     const { 
-        searchResult, idsOfBooks, setIdsOfBooks, isMainPage, API_Key, books, setBooks, 
-        currentID, setCurrentID, addingCategory, setAddingCategory, categoryIdx 
+        searchResult, idsOfBooks, setIdsOfBooks, isMainPage, API_Key, books, 
+        setBooks, categoryIdx 
     } = props;
 
     const togglePopup = (e) => {
@@ -21,8 +18,6 @@ export default function Books(props) {
         popupDiv.classList.toggle("show");
     }
 
-    // console.log("cat idx: " + categoryIdx)
-
     let resultArr = new Array(searchResult.length);
 
     if (isMainPage) {
@@ -31,44 +26,43 @@ export default function Books(props) {
     
     const buttonsValues = ['to be read', '1/5', '2/5', '3/5', '4/5', '5/5'];
 
-    useEffect(() => {
-        fetch(`https://www.googleapis.com/books/v1/volumes/${currentID}?key=${API_Key}`)
+    const fetchBook = (bookId, categoryId) => {
+        fetch(`https://www.googleapis.com/books/v1/volumes/${bookId}?key=${API_Key}`)
             .then(res => res.json())
             .then(data => {
                 const newArr = [...books]
-                newArr[addingCategory].push(data);
+                newArr[categoryId].push(data);
                 setBooks(newArr);
             })
-    }, [currentID, API_Key, setBooks, addingCategory])
+    }
 
-    const addToCategory = (el, number) => {
-        if (!idsOfBooks[number].includes(el.id)) {
+    const addToCategory = (bookEl, number) => {
+        if (!idsOfBooks[number].includes(bookEl.id)) {
             const newArr = [...idsOfBooks];
-            newArr[number].push(el.id);
+            newArr[number].push(bookEl.id);
             setIdsOfBooks(newArr);
-            setCurrentID(el.id);
-            setAddingCategory(number);
+            fetchBook(bookEl.id, number);
         }         
     }
 
-    function Book({togglePopup, el, buttonsValues, addToCategory}) {
+    function Book({togglePopup, bookEl, buttonsValues, addToCategory}) {
     return (
         // zmienic klucz
         <div>
-             <div onClick={togglePopup} className="book"><img src={el.volumeInfo?.imageLinks?.thumbnail} alt={el.volumeInfo?.title} /></div>
+             <div onClick={togglePopup} className="book"><img src={bookEl.volumeInfo?.imageLinks?.thumbnail} alt={bookEl.volumeInfo?.title} /></div>
              <div className="info-popup">
                  <div className="add-to-category">
-                     {buttonsValues.map((btn, id) => {
+                     {buttonsValues.map((btn, categoryId) => {
                         return (
-                            <button onClick={() => addToCategory(el, id)}>{buttonsValues[id]}</button>
+                            <button onClick={() => addToCategory(bookEl, categoryId)}>{buttonsValues[categoryId]}</button>
                         )
                     })}
                 </div>
-                <p><span className="bold">title:</span> {el.volumeInfo?.title}</p>
-                <p><span className="bold">author:</span> {el.volumeInfo?.authors}</p>
-                <p><span className="bold">categories:</span> {el.volumeInfo?.categories}</p>
-                <p><span className="bold">publish date:</span> {el.volumeInfo?.publishedDate}</p>
-                <p><span className="bold">info:</span> {el.volumeInfo?.description !== undefined ? el.volumeInfo?.description : ''}</p>
+                <p><span className="bold">title:</span> {bookEl.volumeInfo?.title}</p>
+                <p><span className="bold">author:</span> {bookEl.volumeInfo?.authors}</p>
+                <p><span className="bold">categories:</span> {bookEl.volumeInfo?.categories}</p>
+                <p><span className="bold">publish date:</span> {bookEl.volumeInfo?.publishedDate}</p>
+                <p><span className="bold">info:</span> {bookEl.volumeInfo?.description !== undefined ? bookEl.volumeInfo?.description : ''}</p>
             </div>
         </div>
     )
@@ -76,23 +70,23 @@ export default function Books(props) {
 
     return (
         <div className="books-container">
-            {isMainPage ? (resultArr !== undefined ? resultArr.map(el => {
+            {isMainPage ? (resultArr !== undefined ? resultArr.map(bookEl => {
                 // stworzyc komponent Book
                 return (
                     <Book 
                         togglePopup={togglePopup}
-                        el={el}
+                        bookEl={bookEl}
                         buttonsValues={buttonsValues}
                         addToCategory={addToCategory}
                     />
                 )
 
-            }): "") :  books[categoryIdx] !== undefined ? books[categoryIdx].map(el => {
+            }): "") :  books[categoryIdx] !== undefined ? books[categoryIdx].map(bookEl => {
                 return (
                     // zmienic klucz
                     <Book 
                         togglePopup={togglePopup}
-                        el={el}
+                        bookEl={bookEl}
                         buttonsValues={buttonsValues}
                         addToCategory={addToCategory}
                     />

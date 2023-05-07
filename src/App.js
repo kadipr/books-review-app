@@ -16,8 +16,6 @@ function App() {
   const [searchResult, setSearchResult] = useState([]);
   const [idsOfBooks, setIdsOfBooks] = useState([[],[],[],[],[],[]]);
   const [books, setBooks] = useState([[],[],[],[],[],[]]);
-  const [currentID, setCurrentID] = useState("");
-  const [addingCategory, setAddingCategory] = useState(null);
 
   const routesParams = [
     {
@@ -57,7 +55,7 @@ function App() {
     }
   ]
 
-  const API_Key = process.env.KEY;
+  const API_Key = process.env.REACT_APP_KEY;
 
   useEffect(() => {
     fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&key=${API_Key}`)
@@ -73,9 +71,7 @@ function App() {
       <div className="App">
         <Navbar />
         <main>
-          <Search 
-            setQuery={setQuery}
-          />
+          <Search setQuery={setQuery} />
           
           {/* dodać route do all books (?) */}
           <Routes>
@@ -88,11 +84,7 @@ function App() {
                   isMainPage={el.isMainPage}
                   books={books}
                   setBooks={setBooks}
-                  currentID={currentID}
-                  setCurrentID={setCurrentID}
                   API_Key={API_Key}
-                  addingCategory={addingCategory}
-                  setAddingCategory={setAddingCategory}
                   categoryIdx={idx - 1}
                 />}/>
               )
