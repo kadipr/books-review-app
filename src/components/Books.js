@@ -22,20 +22,22 @@ export default function Books(props) {
     
     const buttonsValues = ['to be read', '1/5', '2/5', '3/5', '4/5', '5/5'];
 
-    const fetchBook = (bookId, categoryId) => {
-        fetch(`https://www.googleapis.com/books/v1/volumes/${bookId}?key=${API_Key}`)
-            .then(res => res.json())
-            .then(data => {
-                const newArr = [...books]
-                newArr[categoryId].push(data);
-                setBooks(newArr);
-            })
-    }
-
     const addToCategory = (bookEl, number) => {
         if (!books[number].some(book => book.id === bookEl.id)) {
-            fetchBook(bookEl.id, number);
-        }         
+            fetch(`https://www.googleapis.com/books/v1/volumes/${bookEl.id}?key=${API_Key}`)
+                .then(res => res.json())
+                .then(data => {
+                    const newArr = [...books]
+                    newArr[number].push(data);
+                    setBooks(newArr.map((bookCategory, categoryIdx) => {
+                        return (bookCategory.filter(book => book.id !== bookEl.id || categoryIdx === number))
+                    }));
+            })
+        }
+    }
+
+    const deleteBookFromAnyCategory = (bookEl) => {
+        setBooks([...books].map(bookCategory => (bookCategory.filter(book => book.id !== bookEl.id))));
     }
 
     function Book({toggleInfoPopup, bookEl, buttonsValues, addToCategory}) {
@@ -43,7 +45,7 @@ export default function Books(props) {
         <div>
              <div onClick={toggleInfoPopup} className="book">
                 <img src={bookEl.volumeInfo?.imageLinks?.thumbnail} alt={bookEl.volumeInfo?.title} />
-            </div>
+            </div> 
              <div className="info-popup">
                  <div className="add-to-category">
                      {buttonsValues.map((btn, categoryId) => {
@@ -51,6 +53,7 @@ export default function Books(props) {
                             <button onClick={() => addToCategory(bookEl, categoryId)}>{btn}</button>
                         )
                     })}
+                    <button onClick={() => deleteBookFromAnyCategory(bookEl)}>delete in any category</button>
                 </div>
                 <p><span className="bold">title:</span> {bookEl.volumeInfo?.title}</p>
                 <p><span className="bold">author:</span> {bookEl.volumeInfo?.authors}</p>
