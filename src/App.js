@@ -9,49 +9,46 @@ import { useState, useEffect } from "react";
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 
 function App() {
-  // delete unnecessery states
   const [query, setQuery] = useState("");
-
   // books shown on a specific page
-  const [searchResult, setSearchResult] = useState([]);
-  const [idsOfBooks, setIdsOfBooks] = useState([[],[],[],[],[],[]]);
+  const [searchResult, setSearchResult] = useState([]); 
   const [books, setBooks] = useState([[],[],[],[],[],[]]);
 
   const routesParams = [
     {
       path: "/",
       isMainPage: true,
-      searchResult: searchResult
+      itemsInCategory: searchResult
     },
     {
       path: "/to-be-read",
       isMainPage: false,
-      searchResult: idsOfBooks[0]
+      itemsInCategory: searchResult
     },
     {
       path: "/one-star",
       isMainPage: false,
-      searchResult: idsOfBooks[1]
+      itemsInCategory: searchResult
     },
     {
       path: "/two-stars",
       isMainPage: false,
-      searchResult: idsOfBooks[2]
+      itemsInCategory: searchResult
     },
     {
       path: "/three-stars",
       isMainPage: false,
-      searchResult: idsOfBooks[3]
+      itemsInCategory: searchResult
     },
     {
       path: "/four-stars",
       isMainPage: false,
-      searchResult: idsOfBooks[4]
+      itemsInCategory: searchResult
     },
     {
       path: "/five-stars",
       isMainPage: false,
-      searchResult: idsOfBooks[5]
+      itemsInCategory: searchResult
     }
   ]
 
@@ -64,7 +61,7 @@ function App() {
         setSearchResult(data);
       })
       .catch(err => console.log(err))
-  }, [query])
+  }, [query, API_Key])
 
   return (
     <BrowserRouter>
@@ -73,14 +70,11 @@ function App() {
         <main>
           <Search setQuery={setQuery} />
           
-          {/* dodać route do all books (?) */}
           <Routes>
             {routesParams.map((el, idx) => {
               return (
                 <Route path={el.path} element={<Books
-                  searchResult={el.searchResult} 
-                  idsOfBooks={idsOfBooks} 
-                  setIdsOfBooks={setIdsOfBooks}
+                  itemsInCategory={el.itemsInCategory} 
                   isMainPage={el.isMainPage}
                   books={books}
                   setBooks={setBooks}
