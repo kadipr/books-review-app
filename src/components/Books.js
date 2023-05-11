@@ -1,5 +1,19 @@
 export default function Books(props) {
-    const { itemsInCategory, isMainPage, API_Key, books, setBooks, categoryIdx } = props;
+    const { 
+        itemsInCategory, 
+        isMainPage, 
+        API_Key, 
+        books, 
+        setBooks, 
+        categoryIdx 
+    } = props;
+
+    let resultArr = new Array(itemsInCategory.length);
+    const buttonsValues = ['to be read', '1/5', '2/5', '3/5', '4/5', '5/5'];
+    
+    if (isMainPage) {
+        resultArr = itemsInCategory.items;
+    }
 
     const toggleInfoPopup = (e) => {
         const popupDiv = e.target.parentNode.parentNode.children[1];
@@ -14,13 +28,6 @@ export default function Books(props) {
         popupDiv.classList.toggle("show");
     }
 
-    let resultArr = new Array(itemsInCategory.length);
-
-    if (isMainPage) {
-        resultArr = itemsInCategory.items;
-    }
-    
-    const buttonsValues = ['to be read', '1/5', '2/5', '3/5', '4/5', '5/5'];
 
     const addToCategory = (bookEl, number) => {
         if (!books[number].some(book => book.id === bookEl.id)) {
@@ -36,24 +43,26 @@ export default function Books(props) {
         }
     }
 
-    const deleteBookFromAnyCategory = (bookEl) => {
+    const deleteBookFromCategory = (bookEl) => {
         setBooks([...books].map(bookCategory => (bookCategory.filter(book => book.id !== bookEl.id))));
     }
 
-    function Book({toggleInfoPopup, bookEl, buttonsValues, addToCategory}) {
+    function Book({toggleInfoPopup, bookEl, buttonsValues, addToCategory, isCategory }) {
     return (
         <div>
              <div onClick={toggleInfoPopup} className="book">
                 <img src={bookEl.volumeInfo?.imageLinks?.thumbnail} alt={bookEl.volumeInfo?.title} />
+                { isCategory === true ? 
+                    <button className="delete-btn" onClick={() => deleteBookFromCategory(bookEl)}>x</button> 
+                : "" }
             </div> 
-             <div className="info-popup">
+            <div className="info-popup">
                  <div className="add-to-category">
                      {buttonsValues.map((btn, categoryId) => {
                         return (
-                            <button onClick={() => addToCategory(bookEl, categoryId)}>{btn}</button>
+                            <button onClick={() => addToCategory(bookEl, categoryId)}>{btn} </button>
                         )
                     })}
-                    <button onClick={() => deleteBookFromAnyCategory(bookEl)}>delete in any category</button>
                 </div>
                 <p><span className="bold">title:</span> {bookEl.volumeInfo?.title}</p>
                 <p><span className="bold">author:</span> {bookEl.volumeInfo?.authors}</p>
@@ -76,6 +85,7 @@ export default function Books(props) {
                         bookEl={bookEl}
                         buttonsValues={buttonsValues}
                         addToCategory={addToCategory}
+                        isCategory={false}
                     />
                 )
 
@@ -86,6 +96,7 @@ export default function Books(props) {
                         bookEl={bookEl}
                         buttonsValues={buttonsValues}
                         addToCategory={addToCategory}
+                        isCategory={true}
                     />
                 )
             }): ""}

@@ -6,6 +6,7 @@
 }
 
 .book {
+    position: relative;
     width: 130px;
     height: 190px;
     box-shadow: 1px 1px 5px gray;
@@ -16,8 +17,21 @@
     width: 100%;
 }
 
+.delete-btn {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: white;
+    border: none;
+    box-shadow: 1px 1px 10px gray;
+}
+
 .info-popup {
     display: none;
+    z-index: 1;
 }
 
 .info-popup.show {

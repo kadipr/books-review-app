@@ -10,6 +10,7 @@ import { Routes, Route, BrowserRouter } from 'react-router-dom';
 
 function App() {
   const [query, setQuery] = useState("");
+  
   // books shown on a specific page
   const [searchResult, setSearchResult] = useState([]); 
   const [books, setBooks] = useState([[],[],[],[],[],[]]);
